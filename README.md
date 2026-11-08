@@ -147,8 +147,8 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 
 [buymecoffee]: https://www.buymeacoffee.com/benmcclure
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-[commits-shield]: https://img.shields.io/github/commit-activity/y/bmcclure/ha-chore-helper.svg?style=for-the-badge
-[commits]: https://github.com/bmcclure/ha-chore-helper/commits/master
+[commits-shield]: https://img.shields.io/github/commit-activity/y/S4mbucca/ha-chore-helper.svg?style=for-the-badge
+[commits]: https://github.com/S4mbucca/ha-chore-helper/commits/main
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
 [discord]: https://discord.gg/Qa5fW2R
@@ -157,5 +157,5 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [forum]: https://community.home-assistant.io/
 [license-shield]: https://img.shields.io/github/license/custom-components/blueprint.svg?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-Ben%20McClure%20%40bmcclure-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/bmcclure/ha-chore-helper.svg?style=for-the-badge
-[releases]: https://github.com/bmcclure/ha-chore-helper/releases
+[releases-shield]: https://img.shields.io/github/release/S4mbucca/ha-chore-helper.svg?style=for-the-badge
+[releases]: https://github.com/S4mbucca/ha-chore-helper/releases

@@ -189,8 +189,24 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
             LOGGER.debug("called complete for %s", entity_id)
             try:
                 entity = hass.data[const.DOMAIN][const.SENSOR_PLATFORM][entity_id]
+                previous_due = entity.next_due_date
                 entity.last_completed = dt_util.as_local(last_completed)
+                # Fork: recompute the schedule now, not at the next day's refresh
+                # (after-n-* chores move by the new completion date).
+                await entity._async_load_due_dates()  # pylint: disable=protected-access
                 entity.update_state()
+                # Fork: done ahead of a fixed (every-n-*) due date → that date
+                # counts as done. Upstream keeps it, so the chore stays due.
+                today = helpers.now().date()
+                if (
+                    previous_due is not None
+                    and previous_due > today
+                    and entity.next_due_date == previous_due
+                ):
+                    await entity.remove_date(previous_due)
+                    await entity._async_load_due_dates()  # pylint: disable=protected-access
+                    entity.update_state()
+                entity.async_write_ha_state()
             except KeyError as err:
                 LOGGER.error(
                     "Failed setting last completed for %s - %s", entity_id, err
