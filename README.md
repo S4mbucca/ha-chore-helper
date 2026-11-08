@@ -1,12 +1,26 @@
 # Chore Helper for Home Assistant
 
+> **This is a fork** of [bmcclure/ha-chore-helper](https://github.com/bmcclure/ha-chore-helper) by Ben McClure, MIT-licensed
+> (see [LICENSE](LICENSE) — the original copyright notice is kept). It is not affiliated
+> with or endorsed by the original author. Report problems with this fork
+> [here](https://github.com/S4mbucca/ha-chore-helper/issues), not upstream.
+>
+> **Changes in this fork** (every change is in the [commit history](https://github.com/S4mbucca/ha-chore-helper/commits/main)):
+> - **0.5.3** — saving an edited chore reloads it (upstream called a removed HA API);
+>   proper unload, update-listener and shared-calendar cleanup; HACS installs without a
+>   release zip.
+> - **0.5.4** — `complete` recomputes the due date at once, and completing a chore ahead of
+>   a fixed (every-n) due date counts for that date instead of leaving it due.
+>
+> Everything below is the original README; the documentation applies unchanged.
+
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
 [![License][license-shield]](LICENSE)
 
 [![hacs][hacsbadge]][hacs]
 ![Project Maintenance][maintenance-shield]
-[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
+[![BuyMeCoffee][buymecoffeebadge]][buymecoffee] (supports the original author)
 
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
@@ -155,7 +169,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
-[license-shield]: https://img.shields.io/github/license/custom-components/blueprint.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Ben%20McClure%20%40bmcclure-blue.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/S4mbucca/ha-chore-helper.svg?style=for-the-badge
+[maintenance-shield]: https://img.shields.io/badge/fork%20maintainer-S4mbucca-blue.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/S4mbucca/ha-chore-helper.svg?style=for-the-badge
 [releases]: https://github.com/S4mbucca/ha-chore-helper/releases

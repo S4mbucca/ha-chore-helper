@@ -3,7 +3,7 @@
         "step": {
             "user": {
                 "title": "Chore (1/2)",
-                "description": "Enter the sensor name and configure sensor parameters. More info on https://github.com/bmcclure/ha-chore-helper",
+                "description": "Enter the sensor name and configure sensor parameters. More info on https://github.com/S4mbucca/ha-chore-helper",
                 "data": {
                     "name": "Friendly name",
                     "hidden": "Hide in calendar",
@@ -19,7 +19,7 @@
             },
             "detail": {
                 "title": "Chore (2/2)",
-                "description": "More details here: https://github.com/bmcclure/ha-chore-helper",
+                "description": "More details here: https://github.com/S4mbucca/ha-chore-helper",
                 "data": {
                     "date": "Due date (mm/dd)",
                     "entities": "List of entities (comma separated)",
@@ -58,7 +58,7 @@
         "step": {
             "init": {
                 "title": "Chore (1/2)",
-                "description": "Change sensor parameters. More info on https://github.com/bmcclure/ha-chore-helper",
+                "description": "Change sensor parameters. More info on https://github.com/S4mbucca/ha-chore-helper",
                 "data": {
                     "hidden": "Hide in calendar",
                     "frequency": "Frequency",
@@ -73,7 +73,7 @@
             },
             "detail": {
                 "title": "Chore (2/2)",
-                "description": "More details here: https://github.com/bmcclure/ha-chore-helper",
+                "description": "More details here: https://github.com/S4mbucca/ha-chore-helper",
                 "data": {
                     "date": "Due date (mm/dd)",
                     "entities": "List of entities (comma separated)",

@@ -1,7 +1,8 @@
 """Custom integration to manage household chores with Home Assistant.
 
 For more details about this integration, please refer to
-https://github.com/bmcclure/ha-chore-helper
+https://github.com/S4mbucca/ha-chore-helper
+(fork of https://github.com/bmcclure/ha-chore-helper, MIT — see LICENSE)
 """
 
 from __future__ import annotations
