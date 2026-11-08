@@ -1,6 +1,7 @@
 # Chore Helper for Home Assistant
 
-> **This is a fork** of [bmcclure/ha-chore-helper](https://github.com/bmcclure/ha-chore-helper) by Ben McClure, MIT-licensed
+> **This is a fork** of [VolantisDev/ha-chore-helper](https://github.com/VolantisDev/ha-chore-helper) (formerly `bmcclure/ha-chore-helper`)
+> by Ben McClure, MIT-licensed
 > (see [LICENSE](LICENSE) — the original copyright notice is kept). It is not affiliated
 > with or endorsed by the original author. Report problems with this fork
 > [here](https://github.com/S4mbucca/ha-chore-helper/issues), not upstream.

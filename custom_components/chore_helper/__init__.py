@@ -2,7 +2,7 @@
 
 For more details about this integration, please refer to
 https://github.com/S4mbucca/ha-chore-helper
-(fork of https://github.com/bmcclure/ha-chore-helper, MIT — see LICENSE)
+(fork of https://github.com/VolantisDev/ha-chore-helper by Ben McClure, MIT — see LICENSE)
 """
 
 from __future__ import annotations
