@@ -10,6 +10,7 @@ DOMAIN = "chore_helper"
 CALENDAR_NAME = "Chores"
 SENSOR_PLATFORM = "sensor"
 CALENDAR_PLATFORM = "calendar"
+CALENDAR_ENTRY_ID = "calendar_entry_id"
 ATTRIBUTION = "Data is provided by chore_helper"
 CONFIG_VERSION = 6
 

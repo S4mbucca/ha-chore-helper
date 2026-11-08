@@ -232,27 +232,33 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         config_entry.title,
         config_entry.options[const.CONF_FREQUENCY],
     )
-    config_entry.add_update_listener(update_listener)
+    # Unregister on unload, otherwise every reload adds another listener.
+    config_entry.async_on_unload(config_entry.add_update_listener(update_listener))
 
     # Add sensor
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
     return True
 
 
-async def async_remove_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> None:
-    """Handle removal of an entry."""
-    try:
-        await hass.config_entries.async_forward_entry_unload(
-            config_entry, const.SENSOR_PLATFORM
+async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
+    """Unload a chore. Needed for reload (options edit) and removal."""
+    unloaded = await hass.config_entries.async_unload_platforms(
+        config_entry, PLATFORMS
+    )
+    domain_data = hass.data.get(const.DOMAIN, {})
+    # The shared "Chores" calendar is forwarded on the first visible chore's
+    # entry (chore.py). If that is this entry, unload it too, so the next
+    # chore that loads creates it again instead of it leaking.
+    if unloaded and domain_data.get(const.CALENDAR_ENTRY_ID) == config_entry.entry_id:
+        unloaded = await hass.config_entries.async_unload_platforms(
+            config_entry, [const.CALENDAR_PLATFORM]
         )
-        LOGGER.info("Successfully removed sensor from the chore_helper integration")
-    except ValueError:
-        pass
+        if unloaded:
+            domain_data.pop(const.CALENDAR_PLATFORM, None)
+            domain_data.pop(const.CALENDAR_ENTRY_ID, None)
+    return unloaded
 
 
 async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Update listener - to re-create device after options update."""
-    await hass.config_entries.async_forward_entry_unload(entry, const.SENSOR_PLATFORM)
-    hass.async_add_job(
-        hass.config_entries.async_forward_entry_setup(entry, const.SENSOR_PLATFORM)
-    )
+    """Reload the chore after an options edit (was: removed forward_entry_setup API)."""
+    await hass.config_entries.async_reload(entry.entry_id)

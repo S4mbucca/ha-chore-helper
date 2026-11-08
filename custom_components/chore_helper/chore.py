@@ -140,6 +140,9 @@ class Chore(RestoreEntity):
                 self.hass.data[const.DOMAIN][const.CALENDAR_PLATFORM] = (
                     EntitiesCalendarData(self.hass)
                 )
+                self.hass.data[const.DOMAIN][const.CALENDAR_ENTRY_ID] = (
+                    self.config_entry.entry_id
+                )
                 LOGGER.debug("Creating chore calendar")
                 await self.hass.config_entries.async_forward_entry_setups(
                     self.config_entry, PLATFORMS
@@ -152,10 +155,10 @@ class Chore(RestoreEntity):
     async def async_will_remove_from_hass(self) -> None:
         """When sensor is removed from HA, remove it and its calendar entity."""
         await super().async_will_remove_from_hass()
-        del self.hass.data[const.DOMAIN][const.SENSOR_PLATFORM][self.entity_id]
-        self.hass.data[const.DOMAIN][const.CALENDAR_PLATFORM].remove_entity(
-            self.entity_id
-        )
+        self.hass.data[const.DOMAIN][const.SENSOR_PLATFORM].pop(self.entity_id, None)
+        # No calendar exists when every chore is hidden.
+        if (calendar := self.hass.data[const.DOMAIN].get(const.CALENDAR_PLATFORM)) is not None:
+            calendar.remove_entity(self.entity_id)
 
     @property
     def unique_id(self) -> str:
