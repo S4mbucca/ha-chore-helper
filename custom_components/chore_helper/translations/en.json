@@ -175,6 +175,20 @@
                     "description": "The chore sensor entity_id"
                 }
             }
+        },
+        "skip": {
+            "name": "Skip",
+            "description": "Skip a due date without completing the chore. The chore moves to its next scheduled date at once.",
+            "fields": {
+                "entity_id": {
+                    "name": "Entity ID",
+                    "description": "The chore sensor entity_id"
+                },
+                "date": {
+                    "name": "Date",
+                    "description": "Due date to skip (optional, default the next due date)."
+                }
+            }
         }
     }
 }

@@ -12,6 +12,11 @@
 >   release zip.
 > - **0.5.4** — `complete` recomputes the due date at once, and completing a chore ahead of
 >   a fixed (every-n) due date counts for that date instead of leaving it due.
+> - **0.5.5** — new `chore_helper.skip` service: skips a due date (default the next one)
+>   without completing the chore, effective at once. Fixes: a chore done on its due day no
+>   longer comes back as due (overdue) on that day after midnight; pruning old added/removed/
+>   offset dates no longer leaves an empty value that crashed the next update. The sensor
+>   exposes its `frequency` as an attribute.
 >
 > Everything below is the original README; the documentation applies unchanged.
 

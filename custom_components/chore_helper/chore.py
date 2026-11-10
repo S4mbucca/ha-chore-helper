@@ -239,6 +239,8 @@ class Chore(RestoreEntity):
             const.ATTR_OFFSET_DATES: self.offset_dates,
             const.ATTR_ADD_DATES: self.add_dates,
             const.ATTR_REMOVE_DATES: self.remove_dates,
+            # Fork: lets automations tell fixed (every-n-*) from after-n-* chores.
+            const.CONF_FREQUENCY: self._frequency,
             ATTR_UNIT_OF_MEASUREMENT: self.native_unit_of_measurement,
             # Needed for translations to work
             ATTR_DEVICE_CLASS: self.DEVICE_CLASS,
@@ -500,31 +502,23 @@ class Chore(RestoreEntity):
             self._overdue_days = None
 
         start_date = self._calculate_start_date()
-        if self._add_dates is not None:
-            self._add_dates = " ".join(
-                [
-                    x
-                    for x in self._add_dates.split(" ")
-                    if datetime.strptime(x, "%Y-%m-%d").date() >= start_date
-                ]
-            )
-        if self._remove_dates is not None:
-            self._remove_dates = " ".join(
-                [
-                    x
-                    for x in self._remove_dates.split(" ")
-                    if datetime.strptime(x, "%Y-%m-%d").date() >= start_date
-                ]
-            )
-        if self._offset_dates is not None:
-            self._offset_dates = " ".join(
-                [
-                    x
-                    for x in self._offset_dates.split(" ")
-                    if datetime.strptime(x.split(":")[0], "%Y-%m-%d").date()
-                    >= start_date
-                ]
-            )
+        # Fork: prune to None, not "" — "".split(" ") gives [""], which made the
+        # next update crash once every removed/added/offset date was in the past.
+        self._add_dates = self._prune_dates(self._add_dates, start_date)
+        self._remove_dates = self._prune_dates(self._remove_dates, start_date)
+        self._offset_dates = self._prune_dates(self._offset_dates, start_date)
+
+    @staticmethod
+    def _prune_dates(dates: str | None, start_date: date) -> str | None:
+        """Keep dates (optionally "date:offset") on or after start_date; None if none."""
+        if not dates:
+            return None
+        kept = [
+            x
+            for x in dates.split(" ")
+            if x and datetime.strptime(x.split(":")[0], "%Y-%m-%d").date() >= start_date
+        ]
+        return " ".join(kept) if kept else None
 
     def calculate_day1(self, day1: date, schedule_start_date: date) -> date:
         """Calculate day1."""
@@ -554,10 +548,11 @@ class Chore(RestoreEntity):
         if self.last_completed is not None:
             last_completed = self.last_completed.date()
 
-            if last_completed > start_date:
-                start_date = last_completed
-            elif last_completed == start_date:
-                start_date += timedelta(days=1)
+            # Fork: the completion day is done — look from the day after. Upstream
+            # did that only when it equalled the start date, so a chore done on its
+            # due day came back as due (overdue) on that same day after midnight.
+            if last_completed >= start_date:
+                start_date = last_completed + timedelta(days=1)
 
         return self.move_to_range(start_date)
 

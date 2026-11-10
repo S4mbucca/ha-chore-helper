@@ -63,3 +63,16 @@ update_state:
     entity_id:
       description: The chore sensor entity_id.
       example: sensor.sweep_floor
+skip:
+  description: Skip a due date without completing the chore (fork). The chore moves to its next scheduled date at once; last_completed is unchanged.
+  target:
+    entity:
+      integration: chore_helper
+      domain: sensor
+  fields:
+    entity_id:
+      description: The chore_helper sensor entity_id.
+      example: sensor.sweep_floor
+    date:
+      description: Due date to skip (optional, default the next due date).
+      example: '"2020-08-16"'

@@ -89,6 +89,13 @@ ADD_DATE_SCHEMA = vol.Schema(
     }
 )
 
+SKIP_SCHEMA = vol.Schema(
+    {
+        vol.Required(CONF_ENTITY_ID): vol.All(cv.ensure_list, [cv.string]),
+        vol.Optional(const.CONF_DATE): cv.date,
+    }
+)
+
 REMOVE_DATE_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_ENTITY_ID): vol.All(cv.ensure_list, [cv.string]),
@@ -213,6 +220,29 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
                     "Failed setting last completed for %s - %s", entity_id, err
                 )
 
+    async def handle_skip(call: ServiceCall) -> None:
+        """Fork: skip a due date (default: the next one) without completing it.
+
+        The chore moves to its next scheduled date at once; last_completed stays.
+        """
+        entity_ids = call.data.get(CONF_ENTITY_ID, [])
+        chore_date = call.data.get(const.CONF_DATE, None)
+        for entity_id in entity_ids:
+            LOGGER.debug("called skip %s for %s", chore_date, entity_id)
+            try:
+                entity = hass.data[const.DOMAIN][const.SENSOR_PLATFORM][entity_id]
+            except KeyError as err:
+                LOGGER.error("Failed skipping %s for %s (%s)", chore_date, entity_id, err)
+                continue
+            skip_date = chore_date if chore_date is not None else entity.next_due_date
+            if skip_date is None:
+                LOGGER.warning("No date to skip for %s", entity_id)
+                continue
+            await entity.remove_date(skip_date)
+            await entity._async_load_due_dates()  # pylint: disable=protected-access
+            entity.update_state()
+            entity.async_write_ha_state()
+
     hass.data.setdefault(const.DOMAIN, {})
     hass.data[const.DOMAIN].setdefault(const.SENSOR_PLATFORM, {})
     hass.services.async_register(
@@ -239,6 +269,7 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     hass.services.async_register(
         const.DOMAIN, "offset_date", handle_offset_date, schema=OFFSET_DATE_SCHEMA
     )
+    hass.services.async_register(const.DOMAIN, "skip", handle_skip, schema=SKIP_SCHEMA)
     return True
 
 
